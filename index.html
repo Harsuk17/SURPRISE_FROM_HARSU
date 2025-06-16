@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Proposal Website</title>
+<style>
+  /* Reset and base */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #ffe6f0 0%, #ffd6e8 40%, #ffa6c9 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow-x: hidden;
+    color: #7b0051;
+    user-select: none;
+  }
+  .container {
+    background: rgba(255 255 255 / 0.9);
+    border-radius: 24px;
+    padding: 32px;
+    max-width: 400px;
+    width: 90vw;
+    box-shadow: 0 8px 24px rgba(203, 46, 102, 0.3);
+    text-align: center;
+    position: relative;
+  }
+  h1.title {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    letter-spacing: 1px;
+    font-weight: 800;
+    color: #ad174d;
+  }
+  p.message {
+    font-size: 1.2rem;
+    margin: 20px 0 40px;
+    color: #6a1b4d;
+    line-height: 1.4;
+  }
+  button, .whatsapp-button {
+    background-color: #b5174d;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 14px 28px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(181, 23, 77, 0.6);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    user-select: none;
+    margin: 0 8px 16px;
+    min-width: 120px;
+  }
+  button:hover, .whatsapp-button:hover {
+    background-color: #e91f63;
+    transform: scale(1.05);
+  }
+  a.whatsapp-link {
+    text-decoration: none;
+  }
+
+  /* Pages hidden by default except one */
+  .page {
+    display: none;
+  }
+  .page.active {
+    display: block;
+  }
+  /* Floating hearts animation */
+  .heart {
+    position: absolute;
+    width: 20px;
+    height: 18px;
+    background-color: #e91f63;
+    transform: rotate(-45deg);
+    border-radius: 20px 20px 0 0;
+    animation: floatUp linear infinite;
+    filter: drop-shadow(0 0 1px #b5174d);
+  }
+  .heart:before,
+  .heart:after {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 18px;
+    background-color: #e91f63;
+    border-radius: 50%;
+  }
+  .heart:before {
+    top: -10px;
+    left: 0;
+  }
+  .heart:after {
+    left: 10px;
+    top: 0;
+  }
+  @keyframes floatUp {
+    0% { transform: translateY(0) rotate(-45deg); opacity: 1; }
+    100% { transform: translateY(-300px) rotate(-45deg); opacity: 0; }
+  }
+
+  /* Floating balloons animation */
+  .balloon {
+    position: absolute;
+    bottom: -100px;
+    width: 30px;
+    height: 40px;
+    background: linear-gradient(135deg, #fb7185, #db2777);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    box-shadow: inset -4px -4px 8px #9f1239;
+    animation: floatBalloon linear infinite;
+    filter: drop-shadow(0 0 2px #ad174d);
+  }
+  .balloon:before {
+    content: "";
+    position: absolute;
+    bottom: -12px;
+    left: 50%;
+    width: 2px;
+    height: 10px;
+    background-color: #9f1239;
+    transform: translateX(-50%);
+    border-radius: 1px;
+  }
+  @keyframes floatBalloon {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-350px); opacity: 0; }
+  }
+
+  /* Centered floating message overlay */
+  #quickAgreeMsg {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    background: #fce4ecdd;
+    padding: 24px 32px;
+    border-radius: 24px;
+    font-weight: 800;
+    font-size: 1.7rem;
+    color: #b5174d;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 32px rgba(197, 17, 93, 0.8);
+    display: none;
+    z-index: 100;
+    user-select: none;
+  }
+</style>
+</head>
+<body>
+
+  <!-- Hearts floating on page -->
+  <div id="heartsContainer"></div>
+  <!-- Balloons floating -->
+  <div id="balloonsContainer"></div>
+
+  <!-- Quick agree message overlay -->
+  <div id="quickAgreeMsg">Itte jldi man gai!</div>
+
+  <!-- Page 1 -->
+  <div class="container page active" id="page1" role="main" aria-label="Question Page 1">
+    <h1 class="title">Do You Like Harsu?</h1>
+    <button class="response-button" onclick="handleAnswer('page1', 'yes')">Yes</button>
+    <button class="response-button" onclick="handleAnswer('page1', 'no')">No</button>
+  </div>
+
+  <!-- Page 2 -->
+  <div class="container page" id="page2" role="main" aria-label="Question Page 2">
+    <h1 class="title">Sacchi Me Tum Mujhe Like Nahi Krti?</h1>
+    <button class="response-button" onclick="handleAnswer('page2', 'yes')">Yes</button>
+    <button class="response-button" onclick="handleAnswer('page2', 'no')">No</button>
+  </div>
+
+  <!-- Page 3 -->
+  <div class="container page" id="page3" role="main" aria-label="Final Page">
+    <h1 class="title">Harsu Se Accha Ladka Tumhe Kabhi Nahi Milega!</h1>
+    <p class="message">Or na bhi mano to uta ke le jayge.</p>
+    <p class="message" style="margin-top: 1rem; font-weight: 700;">Harsu tumhe sach me pyar krta h.</p>
+    <a class="whatsapp-link" href="https://wa.me/9301885654?text=YES%20I%20love%20you%20soo%20much%2C%20I%20wanna%20be%20your%20wife" target="_blank" rel="noopener noreferrer">
+      <button class="whatsapp-button" aria-label="Rista">Jldi Rista bhej Do ...!</button>
+    </a>
+  </div>
+
+<script>
+  // Utility: Show only one page by id, hide others
+  function showPage(pageId) {
+    document.querySelectorAll('.page').forEach(p => {
+      p.classList.remove('active');
+    });
+    const page = document.getElementById(pageId);
+    if (page) {
+      page.classList.add('active');
+    }
+  }
+
+  const quickAgreeMsg = document.getElementById('quickAgreeMsg');
+
+  function handleAnswer(page, answer) {
+    if (page === 'page1') {
+      if (answer === 'yes') {
+        // Show "Itte jldi man gai" message then go to page 2
+        quickAgreeMsg.style.display = 'block';
+        // Temporarily disable buttons to prevent clicks
+        disableButtons(true);
+
+        setTimeout(() => {
+          quickAgreeMsg.style.display = 'none';
+          showPage('page2');
+          disableButtons(false);
+        }, 2000);
+      } else if (answer === 'no') {
+        showPage('page3');
+      }
+    }
+    else if (page === 'page2') {
+      // For either answer on page 2, go to final page 3
+      showPage('page3');
+    }
+  }
+
+  function disableButtons(disable) {
+    document.querySelectorAll('button.response-button').forEach(btn => {
+      btn.disabled = disable;
+      if (disable) {
+        btn.style.cursor = 'default';
+      } else {
+        btn.style.cursor = 'pointer';
+      }
+    });
+  }
+
+  // Create floating hearts continuously
+  const heartsContainer = document.getElementById('heartsContainer');
+  function createHeart() {
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    heart.style.left = Math.random() * 100 + 'vw';
+    heart.style.animationDuration = (5 + Math.random() * 7) + 's';
+    heart.style.animationTimingFunction = 'linear';
+    heartsContainer.appendChild(heart);
+    setTimeout(() => {
+      heart.remove();
+    }, 12000);
+  }
+  setInterval(createHeart, 700);
+
+  // Create floating balloons continuously
+  const balloonsContainer = document.getElementById('balloonsContainer');
+  function createBalloon() {
+    const balloon = document.createElement('div');
+    balloon.classList.add('balloon');
+    balloon.style.left = Math.random() * 100 + 'vw';
+    balloon.style.width = 20 + Math.random() * 20 + 'px';
+    balloon.style.height = (parseFloat(balloon.style.width) * 1.3) + 'px';
+    balloon.style.background = `linear-gradient(135deg, hsl(${Math.random()*360}, 70%, 70%), hsl(${Math.random()*360}, 80%, 50%))`;
+    balloon.style.animationDuration = (8 + Math.random() * 7) + 's';
+    balloonsContainer.appendChild(balloon);
+    setTimeout(() => {
+      balloon.remove();
+    }, 13000);
+  }
+  setInterval(createBalloon, 1200);
+</script>
+</body>
+</html>
+
